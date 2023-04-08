@@ -47,6 +47,13 @@ function PageSignin() {
   };
 
   useEffect(() => {
+    const isToken = localStorage.getItem("Token");
+    if (isToken) {
+      navigate("/todo", { replace: true });
+    }
+  }, []);
+
+  useEffect(() => {
     if (errorData.userEmail === true && errorData.userPassword === true) {
       setBtnDisabled(false);
     } else {

@@ -1,5 +1,5 @@
-import { React, useState, createContext } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { React, useState, createContext, useEffect } from "react";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 
 import "./App.css";
 
@@ -13,6 +13,7 @@ export const DispatchContext = createContext();
 
 function App() {
   const [data, setData] = useState([]);
+
   return (
     <div className="App">
       <StateContext.Provider value={data}>
