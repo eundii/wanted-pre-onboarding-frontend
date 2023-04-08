@@ -5,6 +5,8 @@ import "./App.css";
 
 import Home from "./pages/Home";
 import PageSignup from "./pages/PageSignup";
+import PageSignin from "./pages/PageSignin";
+import TodoList from "./pages/TodoList";
 
 export const StateContext = createContext();
 export const DispatchContext = createContext();
@@ -20,6 +22,8 @@ function App() {
               <Routes>
                 <Route path="" element={<Home />} />
                 <Route path="/signup" element={<PageSignup />} />
+                <Route path="/signin" element={<PageSignin />} />
+                <Route path="/todo" element={<TodoList />} />
               </Routes>
             </div>
           </BrowserRouter>

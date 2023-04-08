@@ -13,7 +13,7 @@ const initialErrorData = {
   userPassword: "",
 };
 
-function PageSignup() {
+function PageSignin() {
   const [inputs, setInputs] = useState({
     userEmail: "",
     userPassword: "",
@@ -23,21 +23,26 @@ function PageSignup() {
 
   const navigate = useNavigate();
 
-  const onJoin = (e) => {
+  const onLogin = (e) => {
     e.preventDefault();
     axios
-      .post(`${BASE_URL}/auth/signup`, {
+      .post(`${BASE_URL}/auth/signin`, {
         email: inputs.userEmail,
         password: inputs.userPassword,
       })
       .then((response) => {
+        localStorage.setItem("Token", response.data.access_token);
         console.log(response);
         if ((response.status = 200)) {
-          return navigate("/signin");
+          return navigate("/todo");
         }
       })
       .catch(function (error) {
-        alert(error.response.data.message);
+        if (error.response.data.statusCode === 404) {
+          alert(error.response.data.message);
+        } else if (error.response.data.statusCode === 401) {
+          alert("틀린 비밀번호 입니다. 다시 입력해주세요.");
+        }
       });
   };
 
@@ -82,14 +87,14 @@ function PageSignup() {
         />
 
         <FormButton
-          testid="signup-button"
-          text="회원가입"
+          testid="signin-button"
+          text="로그인"
           disabled={btnDisabled}
-          onClick={onJoin}
+          onClick={onLogin}
         />
       </form>
     </div>
   );
 }
 
-export default PageSignup;
+export default PageSignin;
