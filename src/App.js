@@ -30,9 +30,8 @@ export const DispatchContext = createContext();
 
 function todoReducer(state, action) {
   switch (action.type) {
-    case "INIT": {
+    case "GET":
       return action.data;
-    }
     case "CREATE":
       return state.concat(action.data);
     case "REMOVE":
@@ -53,20 +52,19 @@ function todoReducer(state, action) {
 }
 
 function App() {
+  const token = localStorage.getItem("Token");
+
   const [data, dispatch] = useReducer(todoReducer, []);
 
-  const dataId = useRef(0);
-
-  const getTodos = (token) => {
+  const getTodos = () => {
     axios
-      .get(`${BASE_URL}/auth/signin`, {
+      .get(`${BASE_URL}/todos`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        const initData = response.data;
-        dispatch({ type: "INIT", data: initData });
+        dispatch({ type: "GET", data: response.data });
         console.log(response);
       })
       .catch(function (error) {
@@ -74,38 +72,55 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("Token");
-    getTodos(token);
+  const onCreate = useCallback((todo) => {
+    axios
+      .post(
+        `${BASE_URL}/todos`,
+        {
+          todo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        dispatch({
+          type: "CREATE",
+          data: {
+            id: response.data.id,
+            todo,
+            isCompleted: response.data.isCompleted,
+            userId: response.data.userId,
+          },
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }, []);
 
-  const onCreate = useCallback((todo, isCompleted, userId) => {
-    dispatch({
-      type: "CREATE",
-      data: {
-        id: dataId.current,
-        todo,
-        isCompleted,
-        userId,
-      },
-    });
-    dataId.current += 1;
-  }, []);
+  // const onRemove = useCallback((id) => {
+  //   dispatch({ type: "REMOVE", id });
+  // }, []);
 
-  const onRemove = useCallback((id) => {
-    dispatch({ type: "REMOVE", id });
-  }, []);
+  // const onEdit = useCallback((id, todo) => {
+  //   dispatch({ type: "EDIT", id, todo });
+  // }, []);
 
-  const onEdit = useCallback((id, todo) => {
-    dispatch({ type: "EDIT", id, todo });
-  }, []);
-
-  const onToggle = useCallback((id, isCompleted) => {
-    dispatch({ type: "TOGGLE", id, isCompleted });
-  }, []);
+  // const onToggle = useCallback((id, isCompleted) => {
+  //   dispatch({ type: "TOGGLE", id, isCompleted });
+  // }, []);
 
   const memoizedDispatches = useMemo(() => {
-    return { onCreate, onRemove, onEdit, onToggle };
+    // return { onCreate, onRemove, onEdit, onToggle };
+    return { onCreate, getTodos };
+  }, []);
+
+  useEffect(() => {
+    getTodos(token);
   }, []);
 
   return (

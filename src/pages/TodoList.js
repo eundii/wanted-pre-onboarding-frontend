@@ -1,18 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TodoItem from "../components/TodoItem";
+import TodoCreate from "../components/TodoCreate";
+import { StateContext } from "../App";
 
 function TodoList() {
   const navigate = useNavigate();
 
-  const todos = [
-    {
-      id: 1,
-      todo: "과제하기",
-      isCompleted: false,
-      userId: 1,
-    },
-  ];
+  const todoList = useContext(StateContext);
 
   useEffect(() => {
     const isToken = localStorage.getItem("Token");
@@ -24,20 +19,11 @@ function TodoList() {
   return (
     <div>
       <ul className="todo-list">
-        {todos.map((item) => (
-          <TodoItem
-            key={item.id}
-            id={item.id}
-            todo={item.todo}
-            userId={item.userId}
-            isCompleted={item.isCompleted}
-          />
+        {todoList.map((item) => (
+          <TodoItem key={item.id} {...item} />
         ))}
       </ul>
-      <div className="create-todo">
-        <input data-testid="new-todo-input" />
-        <button data-testid="new-todo-add-button">추가</button>
-      </div>
+      <TodoCreate />
     </div>
   );
 }

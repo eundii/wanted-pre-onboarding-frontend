@@ -1,11 +1,11 @@
 import React from "react";
 
-function TodoItem() {
+function TodoItem({ todo, isCompleted }) {
   return (
     <li>
       <label>
         <input type="checkbox" />
-        <span>TODO 1</span>
+        <span>{todo}</span>
       </label>
       <div className="btn-area">
         <button data-testid="modify-button">수정</button>
