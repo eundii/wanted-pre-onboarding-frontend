@@ -23,7 +23,6 @@ function TodoCreate() {
       return;
     }
     onCreate(state.todo);
-    alert("저장 성공");
     setState({
       todo: "",
     });

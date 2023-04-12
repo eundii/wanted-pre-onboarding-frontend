@@ -38,14 +38,11 @@ function todoReducer(state, action) {
       return state.filter((item) => item.id !== action.id);
     case "EDIT":
       return state.map((item) =>
-        item.id === action.id ? { ...item, todo: action.data } : item
-      );
-    case "TOGGLE":
-      return state.map((item) =>
         item.id === action.id
-          ? { ...item, idCopmleted: !action.isCompleted }
+          ? { ...item, todo: action.todo, isCompleted: action.isCompleted }
           : item
       );
+
     default:
       return state;
   }
@@ -65,7 +62,6 @@ function App() {
       })
       .then((response) => {
         dispatch({ type: "GET", data: response.data });
-        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -86,7 +82,6 @@ function App() {
         }
       )
       .then((response) => {
-        console.log(response);
         dispatch({
           type: "CREATE",
           data: {
@@ -102,26 +97,63 @@ function App() {
       });
   }, []);
 
-  // const onRemove = useCallback((id) => {
-  //   dispatch({ type: "REMOVE", id });
-  // }, []);
+  const onRemove = useCallback((id) => {
+    axios
+      .delete(`${BASE_URL}/todos/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: "REMOVE",
+          data: {
+            id: response.data.id,
+          },
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
-  // const onEdit = useCallback((id, todo) => {
-  //   dispatch({ type: "EDIT", id, todo });
-  // }, []);
-
-  // const onToggle = useCallback((id, isCompleted) => {
-  //   dispatch({ type: "TOGGLE", id, isCompleted });
-  // }, []);
+  const onEdit = useCallback((id, todo, isCompleted) => {
+    axios
+      .put(
+        `${BASE_URL}/todos/${id}`,
+        {
+          todo,
+          isCompleted,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        dispatch({
+          type: "EDIT",
+          data: {
+            id: response.data.id,
+            todo: response.data.todo,
+            isCompleted: response.data.isCompleted,
+          },
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
 
   const memoizedDispatches = useMemo(() => {
-    // return { onCreate, onRemove, onEdit, onToggle };
-    return { onCreate, getTodos };
+    return { onCreate, getTodos, onRemove, onEdit };
   }, []);
 
   useEffect(() => {
     getTodos(token);
-  }, []);
+  }, [data]);
 
   return (
     <div className="App">
