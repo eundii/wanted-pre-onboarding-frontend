@@ -3,18 +3,10 @@ import {
   useState,
   createContext,
   useEffect,
-  useReducer,
-  useRef,
   useCallback,
   useMemo,
 } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
@@ -28,32 +20,12 @@ import { BASE_URL } from "./api/baseUrl";
 export const StateContext = createContext();
 export const DispatchContext = createContext();
 
-function todoReducer(state, action) {
-  switch (action.type) {
-    case "GET":
-      return action.data;
-    case "CREATE":
-      return state.concat(action.data);
-    case "REMOVE":
-      return state.filter((item) => item.id !== action.id);
-    case "EDIT":
-      return state.map((item) =>
-        item.id === action.id
-          ? { ...item, todo: action.todo, isCompleted: action.isCompleted }
-          : item
-      );
-
-    default:
-      return state;
-  }
-}
-
 function App() {
   const token = localStorage.getItem("Token");
 
-  const [data, dispatch] = useReducer(todoReducer, []);
+  const [todos, setTodos] = useState([]);
 
-  const getTodos = () => {
+  const getTodos = useCallback((token) => {
     axios
       .get(`${BASE_URL}/todos`, {
         headers: {
@@ -61,12 +33,12 @@ function App() {
         },
       })
       .then((response) => {
-        dispatch({ type: "GET", data: response.data });
+        setTodos(response.data);
       })
       .catch(function (error) {
         console.log(error);
       });
-  };
+  }, []);
 
   const onCreate = useCallback((todo) => {
     axios
@@ -82,15 +54,8 @@ function App() {
         }
       )
       .then((response) => {
-        dispatch({
-          type: "CREATE",
-          data: {
-            id: response.data.id,
-            todo,
-            isCompleted: response.data.isCompleted,
-            userId: response.data.userId,
-          },
-        });
+        getTodos(token);
+        setTodos(todos.concat(response.data));
       })
       .catch(function (error) {
         console.log(error);
@@ -104,13 +69,9 @@ function App() {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => {
-        dispatch({
-          type: "REMOVE",
-          data: {
-            id: response.data.id,
-          },
-        });
+      .then(() => {
+        getTodos(token);
+        setTodos((prev) => prev.filter((item) => item.id !== id));
       })
       .catch(function (error) {
         console.log(error);
@@ -132,15 +93,18 @@ function App() {
         }
       )
       .then((response) => {
-        console.log(response);
-        dispatch({
-          type: "EDIT",
-          data: {
-            id: response.data.id,
-            todo: response.data.todo,
-            isCompleted: response.data.isCompleted,
-          },
-        });
+        getTodos(token);
+        setTodos((prev) =>
+          prev.map((item) =>
+            item.id === id
+              ? {
+                  ...item,
+                  todo: response.todo,
+                  isCompleted: response.isCompleted,
+                }
+              : item
+          )
+        );
       })
       .catch(function (error) {
         console.log(error);
@@ -152,12 +116,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getTodos(token);
-  }, [data]);
+    if (token) {
+      getTodos(token);
+    }
+  }, []);
 
   return (
     <div className="App">
-      <StateContext.Provider value={data}>
+      <StateContext.Provider value={todos}>
         <DispatchContext.Provider value={memoizedDispatches}>
           <BrowserRouter>
             <div className="container">
