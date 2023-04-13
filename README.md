@@ -18,11 +18,11 @@
 명령어를 입력하여 실행
 
 
-### 데모 영상
+## 배포 페이지
+
+<a href="https://eundii-todo-list.web.app/" target="_blank">https://eundii-todo-list.web.app/</a>
 
 
+## 데모 영상
 
-### 배포 페이지
-
-<a href="https://eundii-todo-list.web.app/">https://eundii-todo-list.web.app/</a>
 
