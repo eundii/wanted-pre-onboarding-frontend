@@ -46,7 +46,8 @@
 .center-area {
   display: flex;
   flex-direction: column;
-  width: 60rem;
+  max-width: 60rem;
+  width: 90%;
   min-height: 60rem;
   padding: 2.4rem;
   margin: 3rem 0;
