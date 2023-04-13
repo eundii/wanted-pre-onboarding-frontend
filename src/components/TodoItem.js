@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { DispatchContext } from "../App";
+import React, { useContext, useState } from "react";
+import { DispatchContext } from "../pages/TodoList";
 
 function TodoItem({ id, todo, isCompleted }) {
   const { onRemove, onEdit } = useContext(DispatchContext);

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { DispatchContext } from "../App";
+import React, { useContext, useRef, useState } from "react";
+import { DispatchContext } from "../pages/TodoList";
 
 function TodoCreate() {
   const { onCreate } = useContext(DispatchContext);
