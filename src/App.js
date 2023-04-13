@@ -8,7 +8,7 @@ import {
 } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import "./App.css";
+import "../src/scss/styles.scss";
 
 import Home from "./pages/Home";
 import PageSignup from "./pages/PageSignup";
@@ -16,6 +16,7 @@ import PageSignin from "./pages/PageSignin";
 import TodoList from "./pages/TodoList";
 import axios from "axios";
 import { BASE_URL } from "./api/baseUrl";
+import Header from "./components/Header";
 
 export const StateContext = createContext();
 export const DispatchContext = createContext();
@@ -126,6 +127,7 @@ function App() {
       <StateContext.Provider value={todos}>
         <DispatchContext.Provider value={memoizedDispatches}>
           <BrowserRouter>
+            <Header />
             <div className="container">
               <Routes>
                 <Route path="" element={<Home />} />

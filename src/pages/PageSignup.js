@@ -4,7 +4,6 @@ import { BASE_URL } from "../api/baseUrl";
 
 import axios from "axios";
 
-import styled from "styled-components";
 import FormInput from "../components/FormInput";
 import FormButton from "../components/FormButton";
 
@@ -58,43 +57,47 @@ function PageSignup() {
 
   return (
     <div className="center-area">
-      <form>
-        <FormInput
-          testid="email-input"
-          id="userEmail"
-          name="userEmail"
-          label="이메일"
-          data={inputs}
-          setData={setInputs}
-          errorData={errorData}
-          setErrorData={setErrorData}
-          inputProps={{
-            type: "text",
-            placeholder: "E-mail을 입력하세요.",
-          }}
-        />
-        <FormInput
-          testid="password-input"
-          id="userPassword"
-          name="userPassword"
-          label="비밀번호"
-          data={inputs}
-          setData={setInputs}
-          errorData={errorData}
-          setErrorData={setErrorData}
-          inputProps={{
-            type: "password",
-            placeholder: "비밀번호를 입력하세요.",
-          }}
-        />
+      <h2 className="title">회원가입</h2>
+      <div className="center-area-inner">
+        <form>
+          <FormInput
+            testid="email-input"
+            id="userEmail"
+            name="userEmail"
+            label="이메일"
+            data={inputs}
+            setData={setInputs}
+            errorData={errorData}
+            setErrorData={setErrorData}
+            inputProps={{
+              type: "text",
+              placeholder: "E-mail을 입력하세요.",
+            }}
+          />
+          <FormInput
+            testid="password-input"
+            id="userPassword"
+            name="userPassword"
+            label="비밀번호"
+            data={inputs}
+            setData={setInputs}
+            errorData={errorData}
+            setErrorData={setErrorData}
+            inputProps={{
+              type: "password",
+              placeholder: "비밀번호를 입력하세요.",
+            }}
+          />
 
-        <FormButton
-          testid="signup-button"
-          text="회원가입"
-          disabled={btnDisabled}
-          onClick={onJoin}
-        />
-      </form>
+          <FormButton
+            testid="signup-button"
+            text="회원가입"
+            disabled={btnDisabled}
+            onClick={onJoin}
+            size="large"
+          />
+        </form>
+      </div>
     </div>
   );
 }

@@ -34,10 +34,15 @@ function TodoCreate() {
         data-testid="new-todo-input"
         ref={todoInput}
         name="todo"
+        placeholder="할 일을 입력하세요."
         value={state.todo}
         onChange={handleChangeState}
       />
-      <button data-testid="new-todo-add-button" onClick={handleSubmit}>
+      <button
+        data-testid="new-todo-add-button"
+        className="btn large"
+        onClick={handleSubmit}
+      >
         추가
       </button>
     </div>

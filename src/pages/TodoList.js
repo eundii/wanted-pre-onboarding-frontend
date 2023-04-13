@@ -20,15 +20,20 @@ function TodoList() {
   }, []);
 
   return (
-    <div>
-      {todoList ? (
-        <ul className="todo-list">
-          {todoList.map((item) => (
-            <TodoItem key={item.id} {...item} />
-          ))}
-        </ul>
-      ) : null}
-      <TodoCreate />
+    <div className="center-area">
+      <h2 className="title">TODO</h2>
+      <div className="center-area-inner">
+        <div className="todo-area">
+          {todoList ? (
+            <ul className="todo-list">
+              {todoList.map((item) => (
+                <TodoItem key={item.id} {...item} />
+              ))}
+            </ul>
+          ) : null}
+          <TodoCreate />
+        </div>
+      </div>
     </div>
   );
 }

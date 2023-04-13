@@ -48,19 +48,35 @@ function TodoItem({ id, todo, isCompleted }) {
       <div className="btn-area">
         {isEdit ? (
           <>
-            <button data-testid="submit-button" onClick={handleEdit}>
+            <button
+              data-testid="submit-button"
+              className="btn small"
+              onClick={handleEdit}
+            >
               제출
             </button>
-            <button data-testid="cancel-button" onClick={handleQuitEdit}>
+            <button
+              data-testid="cancel-button"
+              className="btn small"
+              onClick={handleQuitEdit}
+            >
               취소
             </button>
           </>
         ) : (
           <>
-            <button data-testid="modify-button" onClick={toggleIsEdit}>
+            <button
+              data-testid="modify-button"
+              className="btn small"
+              onClick={toggleIsEdit}
+            >
               수정
             </button>
-            <button data-testid="delete-button" onClick={() => onRemove(id)}>
+            <button
+              data-testid="delete-button"
+              className="btn small"
+              onClick={() => onRemove(id)}
+            >
               삭제
             </button>
           </>

@@ -1,0 +1,39 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 9rem;
+  padding: 1rem 1.2rem;
+  color: white;
+  font-weight: bold;
+  outline: none;
+  border-radius: 0.4rem;
+  border: none;
+  cursor: pointer;
+  background: $primary;
+
+  // size
+  &.large {
+    height: 5rem;
+    font-size: 1.8rem;
+  }
+
+  &.medium {
+    height: 4rem;
+    font-size: 1.6rem;
+  }
+
+  &.small {
+    height: 3rem;
+    padding-right: 1.4rem;
+  }
+
+  &:hover, &:active {
+    background-color: $primary-active;
+    color: $white;
+  }
+  &:disabled {
+    background-color: $disabled;
+    cursor: default;
+  }
+}
