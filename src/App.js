@@ -34,6 +34,7 @@ function App() {
         },
       })
       .then((response) => {
+        console.log(response);
         setTodos(response.data);
       })
       .catch(function (error) {

@@ -30,7 +30,6 @@ function PageSignup() {
         password: inputs.userPassword,
       })
       .then((response) => {
-        console.log(response);
         if ((response.status = 200)) {
           return navigate("/signin");
         }

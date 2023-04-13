@@ -31,7 +31,6 @@ function PageSignin() {
       })
       .then((response) => {
         localStorage.setItem("Token", response.data.access_token);
-        console.log(response);
         if ((response.status = 200)) {
           return navigate("/todo");
         }
